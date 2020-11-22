@@ -62,7 +62,6 @@ public class AIPatrol : MonoBehaviour
 
     void Update()
     {
-        
             float dist = Vector3.Distance(player.position, agent.transform.position);
         // Choose the next destination point when the agent gets
         // close to the current one.
@@ -72,8 +71,6 @@ public class AIPatrol : MonoBehaviour
                 StartCoroutine(EnemyStop());
                 GotoNextPoint();
             }
-        
-      
          if (dist < 6)  //Check if enemy is close by
               //Need to add logic on how to chase player (When you get too close to enemy or when the enemy sees you)
         {
@@ -94,14 +91,10 @@ public class AIPatrol : MonoBehaviour
                  agent.speed = 0;
                 anim.SetTrigger("idleTrigger");
                 return;
-           //  Start();
             }
            
-            
-             
         }
        
-     //   ChasePlayer();
     }
 
     void EnemyAIState()

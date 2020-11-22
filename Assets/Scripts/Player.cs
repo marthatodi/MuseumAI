@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [Header("NaMeshAgent")]
     public NavMeshAgent agent;
 
+
     [Header("Animator")]
     public Animator anim;
 
@@ -31,7 +32,8 @@ public class Player : MonoBehaviour
 
     [Header("Text UI")]
     public Text text;
-
+    public Text UiGameoverText;
+    
     private int destPoint = 0;
     private int buttonPressed = 0;
     private bool lastPoint = false;
@@ -65,14 +67,16 @@ public class Player : MonoBehaviour
             {
              if(dist<1.30){
               Debug.Log("*********The paintLover get caught !Game over! :( ");
-              text.text = "F**ck!I get caught!";
+              text.text = "I got caught!";
               lastPoint = true;
               agent.speed = 0;
-              //next = 0;
               anim.SetTrigger("idleTrigger");
               buttonsPanel.SetActive(false);
-              gameOverPanel.SetActive(true);
-              // gameOverPanel.SendMessageUpwards("You Lose!");
+        
+             
+                 UiGameoverText.text="You Lose!";
+                 gameOverPanel.SetActive(true);
+          
                  return;
            
              }else if(dist<6){//otan arxisei na thn kunigaei
@@ -80,18 +84,23 @@ public class Player : MonoBehaviour
                  lastPoint = true;
                  agent.destination = lWP.transform.position;
                  text.text =  "I missed:"+( pointsSoure.Length-destPoint);
+                
                 return;
                 }
              else{
                 Debug.Log("*********Enemy is closed dists : "+dist);
+               
                  destPoint = (destPoint - 1) % pointsImber.Length;
-                  if(destPoint==-1){//an den exei dei kanena mexri twra vriskei to epomeno
+                  if(destPoint>=0){//an den exei dei kanena mexri twra vriskei to epomeno
+                   Debug.Log("Go to  "+destPoint);
                    EnemyIsClose();
+                   
                   }else{ //alliws gurnaei ston proigoumeno pinaka
                       destPoint = (destPoint + 1) % pointsImber.Length; 
+                       Debug.Log("Go to  "+destPoint);
                   }
                
-              //  EnemyIsClose();
+           
              }
                
             }
@@ -104,6 +113,7 @@ public class Player : MonoBehaviour
             anim.SetTrigger("idleTrigger");
 
             buttonsPanel.SetActive(false);
+            UiGameoverText.text="You Win!";
             gameOverPanel.SetActive(true);
           
 
@@ -117,10 +127,6 @@ public class Player : MonoBehaviour
             {
                 GotoNextPoint(buttonPressed);
             }
-
-            
-            
-            //Debug.Log("Distance to other: " + dist);
         }
     }
 
@@ -215,23 +221,7 @@ public class Player : MonoBehaviour
 
         //BUG if the enemy destination is the waypoint that you are about to go, it gets stuck there.
         //Need to go to a waypoint that is (dist > 8f) for example
-        if(dist<6){//otan arxisei na thn kunigaei
-                text.text =  "Sh**t he saw me!Gotta get out fast! ";
-                 lastPoint = true;
-                 return;
-                }
-               else if(dist<1){
-                     Debug.Log("*********The paintLover get caught !Game over! :( ");
-              text.text = "F**ck!I get caught!";
-             lastPoint = true;
-              agent.speed = 0;
-            //next = 0;
-            anim.SetTrigger("idleTrigger");
-              buttonsPanel.SetActive(false);
-              gameOverPanel.SetActive(true);
-           //   gameOverPanel.SendMessageUpwards("You Lose!");
-            return;  
-               }
+ 
         if (isImber)
         {
             if (pointsImber.Length == 0) return;
